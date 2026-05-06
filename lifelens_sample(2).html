@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeLens Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter', sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+}
+
+/* PHONE BODY */
+.phone{
+    width:375px;
+    height:780px;
+    border-radius:45px;
+    background:#000;
+    padding:12px;
+    box-shadow:
+        0 0 0 4px #1c1c1c,
+        0 30px 80px rgba(0,0,0,0.9);
+    position:relative;
+}
+
+/* INNER SCREEN */
+.screen-wrapper{
+    width:100%;
+    height:100%;
+    border-radius:35px;
+    overflow:hidden;
+    background:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900") center/cover;
+    position:relative;
+}
+
+/* NOTCH */
+.notch{
+    position:absolute;
+    top:8px;
+    left:50%;
+    transform:translateX(-50%);
+    width:140px;
+    height:28px;
+    background:#000;
+    border-radius:20px;
+    z-index:100;
+}
+
+/* STATUS BAR */
+.status-bar{
+    height:40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 20px;
+    font-size:14px;
+    color:white;
+    background:rgba(0,0,0,0.4);
+}
+
+.status-right{
+    display:flex;
+    gap:8px;
+}
+
+/* MAIN SCREEN AREA */
+.main{
+    position:absolute;
+    top:40px;
+    bottom:80px;
+    left:0;
+    right:0;
+    padding:20px;
+    color:white;
+    overflow-y:auto;
+}
+
+/* SPLASH */
+.splash{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100%;
+    animation:fadeIn 1.5s ease-in-out;
+}
+
+.splash h1{
+    font-size:36px;
+    background:linear-gradient(90deg,#00f2fe,#4facfe);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+}
+
+/* LOCK SCREEN */
+.lock{
+    text-align:center;
+}
+
+.camera-frame{
+    width:240px;
+    height:240px;
+    border:3px solid #00ffc3;
+    border-radius:25px;
+    margin:40px auto;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 0 25px rgba(0,255,200,0.6);
+}
+
+.scan-line{
+    width:100%;
+    height:4px;
+    background:#00ffc3;
+    position:absolute;
+    animation:scan 2s infinite;
+}
+
+@keyframes scan{
+    0%{top:0}
+    50%{top:100%}
+    100%{top:0}
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    background:#00ffc3;
+    color:black;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* HOME SCREEN */
+.home{
+    display:none;
+}
+
+.apps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+    margin-top:30px;
+}
+
+.app{
+    text-align:center;
+}
+
+.app img{
+    width:65px;
+    height:65px;
+    border-radius:18px;
+    transition:0.3s;
+}
+
+.app img:hover{
+    transform:scale(1.1);
+}
+
+.app span{
+    display:block;
+    font-size:12px;
+    margin-top:6px;
+}
+
+/* DOCK */
+.dock{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:80px;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(20px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:40px;
+}
+
+.dock img{
+    width:55px;
+    height:55px;
+    border-radius:16px;
+}
+
+/* HIDDEN */
+.hidden{
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+    <div class="screen-wrapper">
+        <div class="notch"></div>
+
+        <div class="status-bar">
+            <span id="time"></span>
+            <div class="status-right">
+                📶 5G 🔋 92%
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main">
+
+            <!-- SPLASH -->
+            <div class="splash" id="splash">
+                <h1>LifeLens</h1>
+                <p>AI Age-Aware System</p>
+            </div>
+
+            <!-- LOCK -->
+            <div class="lock hidden" id="lock">
+                <h2>Scanning Face</h2>
+                <div class="camera-frame">
+                    <div class="scan-line"></div>
+                </div>
+                <button onclick="unlock()">Scan & Unlock</button>
+            </div>
+
+            <!-- HOME -->
+            <div class="home" id="home">
+                <h3 id="ageText"></h3>
+                <div class="apps" id="apps"></div>
+            </div>
+
+        </div>
+
+        <!-- DOCK -->
+        <div class="dock">
+            <img src="https://img.icons8.com/color/96/phone.png">
+            <img src="https://img.icons8.com/color/96/chrome.png">
+            <img src="https://img.icons8.com/color/96/camera.png">
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+/* LIVE TIME */
+setInterval(()=>{
+    const now=new Date();
+    document.getElementById("time").innerText=
+    now.getHours()+":"+now.getMinutes().toString().padStart(2,'0');
+},1000);
+
+/* SPLASH TRANSITION */
+window.onload=function(){
+    setTimeout(()=>{
+        document.getElementById("splash").classList.add("hidden");
+        document.getElementById("lock").classList.remove("hidden");
+    },2000);
+}
+
+function unlock(){
+    document.getElementById("lock").classList.add("hidden");
+    document.getElementById("home").style.display="block";
+
+    let age=Math.floor(Math.random()*25)+5;
+    document.getElementById("ageText").innerText="Detected Age: "+age;
+
+    let appsData=[
+        {name:"Instagram",icon:"https://img.icons8.com/color/96/instagram-new.png"},
+        {name:"Facebook",icon:"https://img.icons8.com/color/96/facebook.png"},
+        {name:"YouTube",icon:"https://img.icons8.com/color/96/youtube-play.png"},
+        {name:"Spotify",icon:"https://img.icons8.com/color/96/spotify.png"},
+        {name:"Gmail",icon:"https://img.icons8.com/color/96/gmail.png"},
+        {name:"WhatsApp",icon:"https://img.icons8.com/color/96/whatsapp.png"},
+        {name:"Twitter",icon:"https://img.icons8.com/color/96/twitter.png"},
+        {name:"Maps",icon:"https://img.icons8.com/color/96/google-maps.png"}
+    ];
+
+    let container=document.getElementById("apps");
+    container.innerHTML="";
+
+    appsData.forEach(app=>{
+        container.innerHTML+=`
+            <div class="app">
+                <img src="${app.icon}">
+                <span>${app.name}</span>
+            </div>
+        `;
+    });
+}
+</script>
+
+</body>
+</html>
